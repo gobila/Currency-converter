@@ -16,5 +16,7 @@
   "devDependencies": {
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5"
-  }
+  },
+  "author": "Gobila <12902689+gobila@users.noreply.github.com>",
+  "license": "MIT"
 }
