@@ -24,7 +24,7 @@ export default function Menu() {
                   Cotação
                 </span>
               </Link>
-              <Link href="/">
+              <Link href="/wallet">
                 <span className={Style.menuHover}>
                   Carteira
                 </span>

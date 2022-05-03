@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Menu from '../src/components/Menu';
 import styles from '../styles/Home.module.css';
 import DesTable from '../src/components/Table';
+import FormWallet from '../src/components/FormWallet';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Menu />
 
       <main className={styles.main}>
+        <FormWallet />
         <DesTable />
       </main>
 
