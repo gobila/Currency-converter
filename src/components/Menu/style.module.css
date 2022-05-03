@@ -1,0 +1,16 @@
+.menuHover{
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  margin: 2px;
+  border-radius: 8px;
+  background-color: rgba(215, 87, 64);
+  box-shadow: #c34933 2px 4px 1px 1px;
+}
+  
+.menuHover:hover{
+  color: white;
+  background-color: teal;
+  box-shadow: inset #005c5c 2px 4px 4px 2px;
+  cursor: pointer;
+}

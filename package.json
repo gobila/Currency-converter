@@ -9,13 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bootstrap": "^5.1.3",
     "next": "12.1.5",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-bootstrap": "^2.3.1",
+    "react-dom": "18.1.0",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
-    "eslint": "8.14.0",
-    "eslint-config-next": "12.1.5"
+    "eslint": "7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "^4.5.0"
   },
   "author": "Gobila <12902689+gobila@users.noreply.github.com>",
   "license": "MIT"
