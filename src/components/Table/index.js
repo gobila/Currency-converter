@@ -1,47 +1,37 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { selectConta } from '../../services/redux/slice/walletSlice';
 
 export default function DesTable() {
-  const dumbData = [
-    {
-      id: 0,
-      valor: 100,
-      moedaBase: 'usd',
-      moedaConversao: 'brl',
-      valorFinal: 500,
-    }, {
-      id: 1,
-      valor: 10,
-      moedaBase: 'usd',
-      moedaConversao: 'brl',
-      valorFinal: 50,
-    }, {
-      id: 2,
-      valor: 300,
-      moedaBase: 'usd',
-      moedaConversao: 'brl',
-      valorFinal: 1500,
-    },
-  ];
+  const wallet = useSelector(selectConta);
+  console.log('wallet', wallet);
+
   return (
     <Container>
-      <Table responsive="sm" striped bordered hover size="sm">
+      <Table className="mt-3" responsive="sm" striped bordered hover size="sm">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Moeda Base</th>
+            <th>Moeda</th>
             <th>Valor</th>
-            <th>Moeda Conversão</th>
+            <th>Taxa/Cambio</th>
+            <th>Moeda Base</th>
             <th>Valor Final</th>
           </tr>
         </thead>
         <tbody>
-          {dumbData.map((item) => (
+          {wallet.map((item) => (
             <tr>
               <td>{item.id}</td>
-              <td>{item.moedaBase.toUpperCase()}</td>
+              <td>
+                {`${item.code.toUpperCase()} - ${item.moeda.toUpperCase()}`}
+              </td>
               <td>{item.valor}</td>
-              <td>{item.moedaConversao.toUpperCase()}</td>
+              <td>{item.taxa}</td>
+              <td>
+                {`${item.codeBase.toUpperCase()} - ${item.moedaBase.toUpperCase()}`}
+              </td>
               <td>{item.valorFinal}</td>
             </tr>
           ))}
