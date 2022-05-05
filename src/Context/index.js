@@ -15,10 +15,10 @@ function UserProvider({ children }) {
   const api = ConnectGit;
 
   const login = async (userName) => {
-    const userdata = await api.getUser(userName).then(() => {
+    await api.getUser(userName).then((res) => {
+      setUser(res);
       router.push('/profile');
     });
-    setUser(userdata);
   };
 
   const contextValue = useMemo(() => ({

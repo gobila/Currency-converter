@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import {
   Form, Row, Button,
@@ -7,12 +6,6 @@ import { UserContext } from '../../Context';
 
 export default function FormLogin() {
   const user = useContext(UserContext);
-
-  async function getUser(e) {
-    e.preventDefault();
-    const name = document.querySelector('#inlineFormInputName');
-    user.login(name.value);
-  }
 
   return (
     <Form>
@@ -24,7 +17,17 @@ export default function FormLogin() {
           <Form.Control id="inlineFormInputName" placeholder="Jane Doe" />
         </Row>
         <Row xs="auto">
-          <Button type="submit" onClick={getUser}>Submit</Button>
+          <Button
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              const name = document.querySelector('#inlineFormInputName');
+              user.login(name.value);
+            }}
+          >
+            Submit
+
+          </Button>
         </Row>
       </Row>
     </Form>
