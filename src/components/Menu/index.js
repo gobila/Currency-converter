@@ -29,6 +29,11 @@ export default function Menu() {
                   Carteira
                 </span>
               </Link>
+              <Link href="/login">
+                <span className={Style.menuHover}>
+                  Login
+                </span>
+              </Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
