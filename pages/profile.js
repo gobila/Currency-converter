@@ -16,16 +16,29 @@ export default function FormLogin() {
             <Card style={{ width: '18rem' }}>
               <Card.Img variant="top" src={user.avatar_url} />
               <Card.Body>
-                <Card.Title>{user.login}</Card.Title>
-                <Card.Text>
-                  {user.bio}
-                </Card.Text>
+                <Card.Title>
+                  Usuarios
+                  {' '}
+                  {user.login}
+                </Card.Title>
+                <Row>
+                  <Card.Text as={Col} sm={6}>
+                    {`@${user.twitter_username}`}
+                  </Card.Text>
+                  <Card.Text as={Col} sm={6}>
+                    Repositorios
+                    {' '}
+                    <br />
+                    {user.public_repos}
+                  </Card.Text>
+                </Row>
               </Card.Body>
             </Card>
           </Col>
           <Col sm={5}>
-            <Card style={{ width: '18rem' }}>
+            <Card style={{ width: '26rem' }}>
               <Card.Body>
+                <Card.Title>BIO</Card.Title>
                 <Card.Text>
                   {user.bio}
                 </Card.Text>
