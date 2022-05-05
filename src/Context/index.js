@@ -1,42 +1,36 @@
 import React, {
-  createContext, useEffect, useMemo, useState,
+  createContext, useMemo, useState,
 } from 'react';
-import ConnectApi from '../services/connect';
+import { useRouter } from 'next/router';
+import { ConnectGit } from '../services/connect';
 
-const List = createContext([]);
-const ListContext = createContext();
+const User = createContext([]);
+const UserContext = createContext();
 
 // eslint-disable-next-line react/prop-types
-function CoinNamesProvider({ children }) {
-  const [coinNames, setCoinNames] = useState([]);
+function UserProvider({ children }) {
+  const [user, setUser] = useState();
 
-  const api = ConnectApi;
+  const router = useRouter();
+  const api = ConnectGit;
 
-  useEffect(() => {
-    const fetchCoin = async () => {
-      try {
-        // const apiResult = Object.keys(await api.getCoin('all'));
-
-        const apiResult = await api.getCoin('all');
-        setCoinNames(Object.entries(apiResult).map((i) => i[1]));
-        // apiResult.map((i) => setCoinNames(i));
-        console.log('coinNames', coinNames);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchCoin();
-  }, []);
+  const login = async (userName) => {
+    const userdata = await api.getUser(userName).then(() => {
+      router.push('/profile');
+    });
+    setUser(userdata);
+  };
 
   const contextValue = useMemo(() => ({
-    coinNames,
-  }), [coinNames]);
+    login,
+    user,
+  }), [user]);
 
   return (
-    <ListContext.Provider value={contextValue}>
+    <UserContext.Provider value={contextValue}>
       {children}
-    </ListContext.Provider>
+    </UserContext.Provider>
   );
 }
-export { ListContext, CoinNamesProvider };
-export default List;
+export { UserContext, UserProvider };
+export default User;

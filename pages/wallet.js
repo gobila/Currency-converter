@@ -7,7 +7,7 @@ import DesTable from '../src/components/Table';
 import FormWallet from '../src/components/FormWallet';
 import { sagaActions } from '../src/services/redux/sagas';
 
-export default function Home() {
+export default function Wallet() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: sagaActions.ADD_COINS });
