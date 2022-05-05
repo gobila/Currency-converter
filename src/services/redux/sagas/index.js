@@ -2,7 +2,6 @@ import {
   call, takeLatest, put,
 } from 'redux-saga/effects';
 import ConnectApi from '../../connect';
-import { addWallet } from '../slice/walletSlice';
 import { addCoin } from '../slice/coinSlice';
 
 export const sagaActions = {

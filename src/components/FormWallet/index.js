@@ -54,7 +54,7 @@ export default function FormWallet() {
     setConta((currentValues) => (
       {
         ...currentValues,
-        [name]: value
+        [name]: value,
       }
     ));
   };
@@ -173,7 +173,7 @@ export default function FormWallet() {
           </Form.Group>
 
           <Col className="justify-content-center" style={centralize}>
-            <Button type="button" className="m-auto" onClick={addConta}>
+            <Button type="button" className="m-auto" onClick={addConta} style={{}}>
               Submit
             </Button>
           </Col>
