@@ -2,17 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const walletSlice = createSlice({
   name: 'wallet',
-  initialState: [{
-    id: 0,
-    code: 'usd',
-    moeda: 'Dólar Americano',
-    valor: 100,
-    taxa: 5.249,
-    codeBase: 'BRL',
-    moedaBase: 'Real Brasileiro',
-    valorFinal: 524.9,
-  }],
+  initialState: [],
   reducers: {
+    getWallet() {},
     addWallet(state, { payload }) {
       state.push({
         ...payload,
@@ -21,8 +13,8 @@ const walletSlice = createSlice({
   },
 });
 
-export const { addWallet } = walletSlice.actions;
+export const { addWallet, getWallet } = walletSlice.actions;
 
-export const selectConta = (state) => state.wallet;
+export const selectConta = (state) => state;
 
 export default walletSlice.reducer;

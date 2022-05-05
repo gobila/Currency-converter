@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
+import { useDispatch } from 'react-redux';
 import Menu from '../src/components/Menu';
 import styles from '../styles/Home.module.css';
 import DesTable from '../src/components/Table';
 import FormWallet from '../src/components/FormWallet';
+import { sagaActions } from '../src/services/redux/sagas';
 
 export default function Home() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: sagaActions.ADD_COINS });
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
@@ -19,10 +25,6 @@ export default function Home() {
         <FormWallet />
         <DesTable />
       </main>
-
-      <footer className={styles.footer}>
-        Powered by Moises
-      </footer>
     </div>
   );
 }

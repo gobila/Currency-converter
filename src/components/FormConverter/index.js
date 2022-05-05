@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import {
+  Form, Col, Row, Container,
+} from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 export default function FormConverter() {
@@ -55,4 +58,51 @@ export default function FormConverter() {
     const desconveter = result / taxa;
     setValor(desconveter);
   };
+
+  return (
+    <Container>
+      <h2 className="mb-3 text-center">{moeda}</h2>
+      <Form className="col-10 m-auto align-items-center">
+        <Row className="justify-content-center mb-3">
+          <Col sm={11} className="mb-3">
+            <Form.Select
+              id="moeda1"
+              onClick={(e) => {
+                const { value } = e.target;
+                getTaxa(value);
+              }}
+            >
+              {coins.map((coin) => {
+                if (coin.codein === 'BRLT') {
+                  return (
+                    <option value="BRLT" key={coin.codein}>
+                      BRLT - Dólar Americano Turismo
+                    </option>
+                  );
+                }
+                return (
+                  <option value={coin.code} key={coin.code}>
+                    {`
+                      ${coin.code} - ${coin.name.split('/', 1)}
+                    `}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-3">
+          <Col sm={5}>
+            <Form.Control type="number" value={valor} onChange={onChangeValue} />
+          </Col>
+          <Col xs="1">
+            <h4>=</h4>
+          </Col>
+          <Col sm={5}>
+            <Form.Control type="number" value={resultado} onChange={conversao} />
+          </Col>
+        </Row>
+      </Form>
+    </Container>
+  );
 }

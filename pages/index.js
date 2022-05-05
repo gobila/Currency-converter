@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
+import { useDispatch } from 'react-redux';
 import Menu from '../src/components/Menu';
 import styles from '../styles/Home.module.css';
-import Converter from '../src/components/Converter';
+import FormConverter from '../src/components/FormConverter';
+import { sagaActions } from '../src/services/redux/sagas';
 
 export default function Home() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: sagaActions.ADD_COINS });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,12 +22,9 @@ export default function Home() {
       <Menu />
 
       <main className={styles.main}>
-        <Converter />
+        <FormConverter />
       </main>
 
-      <footer className={styles.footer}>
-        Powered by Moises
-      </footer>
     </div>
   );
 }

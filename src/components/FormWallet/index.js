@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addWallet } from '../../services/redux/slice/walletSlice';
 
 const centralize = {
@@ -11,23 +11,56 @@ const centralize = {
 };
 
 export default function FormWallet() {
+  const coinsStore = useSelector((state) => state.CoinReducer);
+  const [coins, setCoins] = useState([]);
+  const [taxa, setTaxa] = useState();
+  const [resultado, setResultado] = useState(0);
+  const dispatch = useDispatch();
+  const date = new Date();
+
   const [conta, setConta] = useState({
     id: 0,
-    code: '',
-    moeda: '',
+    moeda: 'USD',
     valor: 0,
-    data: '',
-    taxa: 0,
-    codeBase: '',
+    data: date.toLocaleDateString(),
+    taxa,
     moedaBase: '',
-    valorFinal: 524.9,
+    valorFinal: resultado,
   });
-  const dispatch = useDispatch();
 
-  const onChangeValue = (e) => {
+  useEffect(() => {
+    setCoins(coinsStore);
+  }, [coinsStore]);
+
+  const getTaxa = (target) => {
+    const moedaTaxa = coins.filter((i) => i.code === target && i.codein !== 'BRLT').map((i) => {
+      const result = { bid: i.bid, name: i.name };
+      return result;
+    });
+    const moedaturismo = coins.filter((i) => i.codein === target).map((i) => {
+      const result = { bid: i.bid, name: i.name };
+      return result;
+    });
+    const taxas = moedaTaxa.map((i) => i.bid);
+    if (target === 'BRLT') {
+      const taxaTurismo = moedaturismo.map((i) => i.bid);
+      return setTaxa(taxaTurismo);
+    }
+    return setTaxa(taxas);
+  };
+  const onChangeData = (e) => {
     const { value } = e.target;
     const { name } = e.target;
-
+    setConta((currentValues) => (
+      {
+        ...currentValues,
+        [name]: value
+      }
+    ));
+  };
+  const onChangeMoeda = (e) => {
+    const { value } = e.target;
+    const { name } = e.target;
     setConta((currentValues) => (
       {
         ...currentValues,
@@ -36,83 +69,116 @@ export default function FormWallet() {
     ));
   };
 
+  const onChangeValue = (e) => {
+    const { value } = e.target;
+    const { name } = e.target;
+    setResultado(value * taxa);
+
+    setConta((currentValues) => (
+      {
+        ...currentValues,
+        [name]: value,
+        taxa,
+        moedaBase: 'BRL',
+        valorFinal: value * taxa,
+      }
+    ));
+  };
+
+  useEffect(() => {
+    const coin = { ...coins[0] };
+    setTaxa(coin.bid);
+  }, [coins]);
+
   const addConta = () => {
     setConta((currentValues) => (
       {
         ...currentValues,
         id: currentValues.id + 1,
-        moeda: 'moeda',
-        moedaBase: 'Real Brasileiro',
-        taxa: 5,
+        moedaBase: 'BRL',
       }
     ));
     dispatch(addWallet(conta));
-    console.log(conta);
   };
-
-  useEffect(() => {
-    const taxa = conta.valor * 4;
-    setConta((currentValues) => (
-      {
-        ...currentValues,
-        valorFinal: taxa,
-      }
-    ));
-  }, [conta.valor]);
-
   return (
-    <Form className="col-10">
-      <Row className="align-items-center">
-        <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridCoin">
-          <Form.Label> Moeda </Form.Label>
-          <Form.Control name="code" onChange={onChangeValue} />
-        </Form.Group>
+    <div>
+      <Form className="col-10">
+        <Row className="align-items-center">
+          <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridCoin">
+            <Form.Label> Moeda </Form.Label>
+            <Form.Select
+              id="moeda1"
+              name="moeda"
+              onClick={(e) => {
+                const { value } = e.target;
+                getTaxa(value);
+              }}
+              onChange={onChangeMoeda}
+            >
+              {coins.map((coin) => {
+                if (coin.codein === 'BRLT') {
+                  return (
+                    <option value="BRLT" key={coin.codein}>
+                      BRLT - Dólar Americano Turismo
+                    </option>
+                  );
+                }
+                return (
+                  <option value={coin.code} name={`${coin.code} - ${coin.name.split('/', 1)}`} key={coin.code}>
+                    {`
+                      ${coin.code} - ${coin.name.split('/', 1)}
+                    `}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </Form.Group>
 
-        <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridValue">
-          <Form.Label> Valor </Form.Label>
-          <Form.Control type="number" name="valor" onChange={onChangeValue} />
-        </Form.Group>
+          <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridValue">
+            <Form.Label> Valor </Form.Label>
+            <Form.Control type="number" name="valor" onChange={onChangeValue} />
+          </Form.Group>
 
-        <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridDate">
-          <Form.Label> Data </Form.Label>
-          <Form.Control type="date" name="data" onChange={onChangeValue} />
-        </Form.Group>
-      </Row>
+          <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridDate">
+            <Form.Label> Data </Form.Label>
+            <Form.Control type="date" name="data" onChange={onChangeData} />
+          </Form.Group>
+        </Row>
 
-      <Row className="align-items-center">
-        <Form.Group as={Col} sm={2} className="mb-3" controlId="formGridCoinTaxa">
-          <Form.Label>
-            Taxa
-          </Form.Label>
-          <Col>
-            <Form.Control placeholder="Taxa" value={10} disabled />
+        <Row className="align-items-center">
+          <Form.Group as={Col} sm={2} className="mb-3" controlId="formGridCoinTaxa">
+            <Form.Label>
+              Taxa
+            </Form.Label>
+            <Col>
+              <Form.Control placeholder="Taxa" value={taxa} disabled />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridCoinBase">
+            <Form.Label>
+              Moeda Base
+            </Form.Label>
+            <Col>
+              <Form.Control placeholder="Moeda Base" value="BRL - Real Brasileiro" disabled />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridValueFinal">
+            <Form.Label>
+              Valor Final
+            </Form.Label>
+            <Col>
+              <Form.Control placeholder="Valor Final" value={resultado} disabled />
+            </Col>
+          </Form.Group>
+
+          <Col className="justify-content-center" style={centralize}>
+            <Button type="button" className="m-auto" onClick={addConta}>
+              Submit
+            </Button>
           </Col>
-        </Form.Group>
-        <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridCoinBase">
-          <Form.Label>
-            Moeda Base
-          </Form.Label>
-          <Col>
-            <Form.Control placeholder="Moeda Base" value={conta.moedaBase} disabled />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Col} sm={4} className="mb-3" controlId="formGridValueFinal">
-          <Form.Label>
-            Valor Final
-          </Form.Label>
-          <Col>
-            <Form.Control placeholder="Valor Final" value={conta.valorFinal} disabled />
-          </Col>
-        </Form.Group>
-
-        <Col className="justify-content-center" style={centralize}>
-          <Button type="button" className="m-auto" onClick={addConta}>
-            Submit
-          </Button>
-        </Col>
-      </Row>
-    </Form>
-
+        </Row>
+      </Form>
+    </div>
   );
 }
