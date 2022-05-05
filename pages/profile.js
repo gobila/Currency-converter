@@ -7,7 +7,6 @@ import { UserContext } from '../src/Context';
 
 export default function FormLogin() {
   const { user } = useContext(UserContext);
-  console.log(user);
   return (
     <div>
       <Menu />
